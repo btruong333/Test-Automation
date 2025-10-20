@@ -19,5 +19,10 @@ test('Logging Into SauceDemo', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).first().click();
   //Assert the page loads up and the user sees the header
   await expect(page.getByText('Products', { exact: true }).first());
+  //Log out
+  await expect(page.getByRole('button', { name: 'Open Menu' })).toBeVisible();
+  await page.getByRole('button', { name: 'Open Menu' }).click();
+  await page.getByText('Logout', { exact: true }).first().click();
+  await expect(page.getByRole('button', { name: 'Login' }).first()).toBeVisible();
 
 });
