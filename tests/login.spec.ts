@@ -1,28 +1,114 @@
 import { test, expect } from '@playwright/test';
+import { SitesAndLogins } from '../pages/source';
 
-test('Logging Into SauceDemo', async ({ page }) => {
-  //Load up SauceDemo
-  await page.goto('https://www.saucedemo.com/');
-  //Assert that the user sees site name
-  await expect(page.getByText('Swag Labs', {exact: true}).first()).toBeVisible();
-  //Assert the Username field appears
-  await expect(page.getByRole('textbox', { name: 'Username' }).first()).toBeVisible();
-  //Assert the Passworld field appears
-  await expect(page.getByRole('textbox', { name: 'Password' }).first()).toBeVisible();
-  //Assert the Login button appears
-  await expect(page.getByRole('button', { name: 'Login' }).first()).toBeVisible();
-  //Input a username
-  await page.getByRole('textbox', { name: 'Username' }).first().fill('standard_user');
-  //Input a password
-  await page.getByRole('textbox', { name: 'Password' }).first().fill('secret_sauce');
+test('Login with Valid Username and Password', async ({ page }) => {
+  const site = new SitesAndLogins(page);
+  //Ensuring the user can log in with a valid username and password without issue
+  
+  //Login
+  await site.loginWithStandardUser();
+  //Assert the landing page loads up
+  await expect(site.logo).toBeVisible();
+  //Logout
+  await site.logout();
+
+});
+
+test('Valid Username Blank Password', async ({ page }) => {
+  const site = new SitesAndLogins(page);
+  //Ensuring the user cannot log in with a valid username and blank password
+  
+  //Navigate to Sauce Demo
+  await page.goto(site.sauceDemoDefaultURL);
+  await site.logo.waitFor();
+  //Input a valid Username
+  await site.usernameField.fill(site.standardUser);
   //Click Login
-  await page.getByRole('button', { name: 'Login' }).first().click();
-  //Assert the page loads up and the user sees the header
-  await expect(page.getByText('Products', { exact: true }).first());
-  //Log out
-  await expect(page.getByRole('button', { name: 'Open Menu' })).toBeVisible();
-  await page.getByRole('button', { name: 'Open Menu' }).click();
-  await page.getByText('Logout', { exact: true }).first().click();
-  await expect(page.getByRole('button', { name: 'Login' }).first()).toBeVisible();
+  await site.loginButton.click();
+  //Assert that the user is not logged in
+  await expect(site.usernameField).toBeVisible();
+  await expect(site.passwordField).toBeVisible();
+  await expect(site.loginButton).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.getByText('Password is required')).toBeVisible();
 
+});
+
+test('Valid Username Invalid Password', async ({ page }) => {
+  const site = new SitesAndLogins(page);
+  //Ensuring the user cannot log in with a valid username and invalid password
+  
+  //Navigate to Sauce Demo
+  await page.goto(site.sauceDemoDefaultURL);
+  await site.logo.waitFor();
+  //Input a valid Username
+  await site.usernameField.fill(site.standardUser);
+  //Input an invalid password
+  await site.passwordField.fill('invalid password');
+  //Click Login
+  await site.loginButton.click();
+  //Assert that the user is not logged in
+  await expect(site.usernameField).toBeVisible();
+  await expect(site.passwordField).toBeVisible();
+  await expect(site.loginButton).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.getByText('Username and password do not match any user in this service')).toBeVisible();
+
+});
+
+test('Blank Username Valid Password', async ({ page }) => {
+  const site = new SitesAndLogins(page);
+  //Ensuring the user cannot log in with a blank username and valid password
+  
+  //Navigate to Sauce Demo
+  await page.goto(site.sauceDemoDefaultURL);
+  await site.logo.waitFor();
+  //Input a valid Password
+  await site.passwordField.fill(site.password);
+  //Click Login
+  await site.loginButton.click();
+  //Assert that the user is not logged in
+  await expect(site.usernameField).toBeVisible();
+  await expect(site.passwordField).toBeVisible();
+  await expect(site.loginButton).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.getByText('Username is required')).toBeVisible();
+
+});
+
+test('Invalid Username Valid Password', async ({ page }) => {
+  const site = new SitesAndLogins(page);
+  //Ensuring the user cannot log in with an invalid username and valid password
+  
+  //Navigate to Sauce Demo
+  await page.goto(site.sauceDemoDefaultURL);
+  await site.logo.waitFor();
+  //Input a valid Username
+  await site.usernameField.fill('invalid_user');
+  //Input an invalid password
+  await site.passwordField.fill(site.password);
+  //Click Login
+  await site.loginButton.click();
+  //Assert that the user is not logged in
+  await expect(site.usernameField).toBeVisible();
+  await expect(site.passwordField).toBeVisible();
+  await expect(site.loginButton).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.getByText('Username and password do not match any user in this service')).toBeVisible();
+
+});
+
+test('Login with Locked Out User', async ({ page }) => {
+  const site = new SitesAndLogins(page);
+  //Ensuring the user cannot log in with a logged out account
+
+  //Login
+  await site.loginWithLockedOutUser();
+  //Assert that the user is not logged in
+  await expect(site.usernameField).toBeVisible();
+  await expect(site.passwordField).toBeVisible();
+  await expect(site.loginButton).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toBeVisible();
+  await expect(page.getByText('Sorry, this user has been locked out')).toBeVisible();
+  
 });
