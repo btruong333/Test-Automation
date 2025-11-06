@@ -96,6 +96,22 @@ Regression testing will cover under workflows across:
     <td>Medium</td>
   </tr>
   <tr>
+    <td>Sort product names from A to Z</td>
+    <td>Medium</td>
+  </tr>
+  <tr>
+    <td>Sort product names from Z to A</td>
+    <td>Medium</td>
+  </tr>
+  <tr>
+    <td>Sort product prices from low to high</td>
+    <td>Medium</td>
+  </tr>
+  <tr>
+    <td>Sort product prices from high to low</td>
+    <td>Medium</td>
+  </tr>
+  <tr>
     <td>More coming soon</td>
     <td>High/Medium/Low</td>
   </tr>
