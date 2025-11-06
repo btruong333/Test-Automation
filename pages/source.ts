@@ -61,7 +61,7 @@ export class SitesAndLogins {
 
         //Navigate to Sauce Demo
         await this.page.goto(this.sauceDemoDefaultURL);
-        await this.logo.waitFor();
+        await expect(this.logo).toBeVisible();
         //Input a Username
         await expect(this.usernameField).toBeVisible();
         await this.usernameField.fill(this.errorUser);
@@ -80,7 +80,7 @@ export class SitesAndLogins {
 
         //Navigate to Sauce Demo
         await this.page.goto(this.sauceDemoDefaultURL);
-        await this.logo.waitFor();
+        await expect(this.logo).toBeVisible();
         //Input a Username
         await expect(this.usernameField).toBeVisible();
         await this.usernameField.fill(this.lockedOutUser);
@@ -99,7 +99,7 @@ export class SitesAndLogins {
 
         //Navigate to Sauce Demo
         await this.page.goto(this.sauceDemoDefaultURL);
-        await this.logo.waitFor();
+        await expect(this.logo).toBeVisible();
         //Input a Username
         await expect(this.usernameField).toBeVisible();
         await this.usernameField.fill(this.standardUser);
@@ -118,7 +118,7 @@ export class SitesAndLogins {
 
         //Navigate to Sauce Demo
         await this.page.goto(this.sauceDemoDefaultURL);
-        await this.logo.waitFor();
+        await expect(this.logo).toBeVisible();
         //Input a Username
         await expect(this.usernameField).toBeVisible();
         await this.usernameField.fill(this.problemUser);
@@ -137,7 +137,7 @@ export class SitesAndLogins {
 
         //Navigate to Sauce Demo
         await this.page.goto(this.sauceDemoDefaultURL);
-        await this.logo.waitFor();
+        await expect(this.logo).toBeVisible();
         //Input a Username
         await expect(this.usernameField).toBeVisible();
         await this.usernameField.fill(this.standardUser);
@@ -156,7 +156,7 @@ export class SitesAndLogins {
 
         //Navigate to Sauce Demo
         await this.page.goto(this.sauceDemoDefaultURL);
-        await this.logo.waitFor();
+        await expect(this.logo).toBeVisible();
         //Input a Username
         await expect(this.usernameField).toBeVisible();
         await this.usernameField.fill(this.visuaUser);
@@ -193,7 +193,9 @@ export class SitesAndLogins {
 export class Objects {
     readonly page: Page;
 
-    //Buttons
+    //Buttons and Links
+    readonly closeMenuButton: Locator;
+    readonly shoppingCartLink: Locator;
 
     //Drop-Down Menu
     readonly menuDropDown: Locator;
@@ -201,17 +203,25 @@ export class Objects {
 
     //Fields
 
+    //Labels
+    readonly productNames: Locator;
+    readonly productPrices: Locator;
+
     //Options
     readonly aboutOption: Locator;
     readonly allItemsOption: Locator;
     readonly nameAZSortOption: Locator;
     readonly nameZASortOption: Locator;
+    readonly priceHighLowSortOption: Locator;
+    readonly priceLowHighSortOption: Locator;
     readonly resetAppStateOption: Locator;
 
     constructor(page: Page) {
         this.page = page;
 
-        //Buttons
+        //Buttons and Links
+        this.closeMenuButton = page.getByRole('button', { name: 'Close Menu' }).first();
+        this.shoppingCartLink = page.locator('[data-test="shopping-cart-link"]').first();
 
         //Drop-Down Menu
         this.menuDropDown = page.getByRole('button', { name: 'Open Menu' }).first();
@@ -219,12 +229,32 @@ export class Objects {
 
         //Fields
 
+        //Labels
+        this.productNames = page.locator('.inventory_item_name');
+        this.productPrices = page.locator('.inventory_item_price');
+
         //Options
         this.aboutOption = page.getByRole('link', { name: 'About', exact: true }).first();
         this.allItemsOption = page.getByRole('link', { name: 'All Items', exact: true }).first();
         this.nameAZSortOption = page.getByRole('option', { name: 'Name (A to Z)'}).first();
         this.nameZASortOption = page.getByRole('option', { name: 'Name (Z to A)'}).first();
+        this.priceHighLowSortOption = page.getByRole('option', { name: 'Price (high to low)' }).first();
+        this.priceLowHighSortOption = page.getByRole('option', { name: 'Price (low to high)' }).first();
         this.resetAppStateOption = page.getByRole('link', { name: 'Reset App Store', exact: true }).first();
 
     }
+
+    async selectSort(option: string) {
+        await this.sortDropDown.selectOption(option);
+    }
+
+    async getProductNames(): Promise<string[]> {
+        return await this.productNames.allInnerTexts();
+    }
+
+    async getProductPrices(): Promise<number[]> {
+        const prices = await this.productPrices.allInnerTexts();
+        return prices.map(p => parseFloat(p.replace('$', '')));
+    }
+
 }

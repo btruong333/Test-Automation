@@ -20,7 +20,7 @@ test('Valid Username Blank Password', async ({ page }) => {
   
   //Navigate to Sauce Demo
   await page.goto(site.sauceDemoDefaultURL);
-  await site.logo.waitFor();
+  await expect(site.logo).toBeVisible();
   //Input a valid Username
   await site.usernameField.fill(site.standardUser);
   //Click Login
@@ -40,7 +40,7 @@ test('Valid Username Invalid Password', async ({ page }) => {
   
   //Navigate to Sauce Demo
   await page.goto(site.sauceDemoDefaultURL);
-  await site.logo.waitFor();
+  await expect(site.logo).toBeVisible();
   //Input a valid Username
   await site.usernameField.fill(site.standardUser);
   //Input an invalid password
@@ -62,7 +62,7 @@ test('Blank Username Valid Password', async ({ page }) => {
   
   //Navigate to Sauce Demo
   await page.goto(site.sauceDemoDefaultURL);
-  await site.logo.waitFor();
+  await expect(site.logo).toBeVisible();
   //Input a valid Password
   await site.passwordField.fill(site.password);
   //Click Login
@@ -82,7 +82,7 @@ test('Invalid Username Valid Password', async ({ page }) => {
   
   //Navigate to Sauce Demo
   await page.goto(site.sauceDemoDefaultURL);
-  await site.logo.waitFor();
+  await expect(site.logo).toBeVisible();
   //Input a valid Username
   await site.usernameField.fill('invalid_user');
   //Input an invalid password
