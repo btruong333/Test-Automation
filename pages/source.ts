@@ -52,7 +52,7 @@ export class SitesAndLogins {
         this.logo = page.getByText('Swag Labs').first();
 
         //Options
-        this.logoutOption = page.locator('[data-test="logout-sidebar-link"]').first();
+        this.logoutOption = page.getByRole('link', { name: 'Logout', exact: true }).first();
 
     }
 
@@ -197,14 +197,16 @@ export class Objects {
 
     //Drop-Down Menu
     readonly menuDropDown: Locator;
+    readonly sortDropDown: Locator;
 
     //Fields
 
     //Options
     readonly aboutOption: Locator;
     readonly allItemsOption: Locator;
-    readonly logoutOption: Locator;
-    readonly resetAppState: Locator;
+    readonly nameAZSortOption: Locator;
+    readonly nameZASortOption: Locator;
+    readonly resetAppStateOption: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -213,14 +215,16 @@ export class Objects {
 
         //Drop-Down Menu
         this.menuDropDown = page.getByRole('button', { name: 'Open Menu' }).first();
+        this.sortDropDown = page.getByRole('combobox').first();
 
         //Fields
 
         //Options
-        this.aboutOption = page.locator('[data-test="about-sidebar-link"]').first();
-        this.allItemsOption = page.locator('[data-test="inventory-sidebar-link"]').first();
-        this.logoutOption = page.locator('[data-test="logout-sidebar-link"]').first();
-        this.resetAppState = page.locator('[data-test="reset-sidebar-link"]').first();
+        this.aboutOption = page.getByRole('link', { name: 'About', exact: true }).first();
+        this.allItemsOption = page.getByRole('link', { name: 'All Items', exact: true }).first();
+        this.nameAZSortOption = page.getByRole('option', { name: 'Name (A to Z)'}).first();
+        this.nameZASortOption = page.getByRole('option', { name: 'Name (Z to A)'}).first();
+        this.resetAppStateOption = page.getByRole('link', { name: 'Reset App Store', exact: true }).first();
 
     }
 }
