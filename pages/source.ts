@@ -194,7 +194,10 @@ export class Objects {
     readonly page: Page;
 
     //Buttons and Links
+    readonly addToCartButton: Locator;
     readonly closeMenuButton: Locator;
+    readonly continueShoppingButton: Locator;
+    readonly removeButton: Locator;
     readonly shoppingCartLink: Locator;
 
     //Drop-Down Menu
@@ -220,7 +223,10 @@ export class Objects {
         this.page = page;
 
         //Buttons and Links
+        this.addToCartButton = page.getByRole('button', { name: 'Add to cart' }).first();
         this.closeMenuButton = page.getByRole('button', { name: 'Close Menu' }).first();
+        this.continueShoppingButton = page.getByRole('button', { name: 'Continue Shopping' }).first();
+        this.removeButton = page.getByRole('button', { name: 'Remove' }).first();
         this.shoppingCartLink = page.locator('[data-test="shopping-cart-link"]').first();
 
         //Drop-Down Menu
@@ -245,16 +251,59 @@ export class Objects {
     }
 
     async selectSort(option: string) {
+        //This looks at the sort drop-down
         await this.sortDropDown.selectOption(option);
     }
 
     async getProductNames(): Promise<string[]> {
+        //Grabs all product names
         return await this.productNames.allInnerTexts();
     }
 
     async getProductPrices(): Promise<number[]> {
+        //Grabs all product prices
         const prices = await this.productPrices.allInnerTexts();
         return prices.map(p => parseFloat(p.replace('$', '')));
+    }
+
+    async addToCart(itemName: string) {
+        //Locate the product container based on item name
+        const product = this.page.locator('.inventory_item').filter({
+            has: this.page.getByRole('heading', { name: itemName })
+        });
+
+        //Click the Add to cart button within the product block
+        await product.getByRole('button', { name: 'Add to cart', exact: true }).click();
+    }
+
+    async removeFromCart(itemName: string) {
+        //Locate the product container based on item name
+        const product = this.page.locator('.inventory_item').filter({
+            has: this.page.getByRole('heading', { name: itemName })
+        });
+
+        //Click the Remove button within the product block
+        await product.getByRole('button', { name: 'Remove', exact: true }).click();
+    }
+
+    async expectItemInCart(itemName: string) {
+        //Looks at all items in the cart
+        const cartItem = this.page.locator('.cart_item').filter({
+            has: this.page.getByRole('heading', { name: itemName })
+        });
+
+        //Assert the user sees the item in the cart
+        await expect(cartItem).toBeVisible();
+    }
+
+    async expectItemNotInCart(itemName: string) {
+        //Looks at all items in the cart
+        const cartItem = this.page.locator('.cart_item').filter({
+            has: this.page.getByRole('heading', { name: itemName })
+        });
+
+        //Assert the user sees the item in the cart
+        await expect(cartItem).not.toBeVisible();
     }
 
 }

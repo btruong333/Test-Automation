@@ -112,6 +112,22 @@ Regression testing will cover under workflows across:
     <td>Medium</td>
   </tr>
   <tr>
+    <td>Adding an item to the cart</td>
+    <td>High</td>
+  </tr>
+  <tr>
+    <td>Removing an item from the item page</td>
+    <td>High</td>
+  </tr>
+  <tr>
+    <td>Verify added items appear in the cart</td>
+    <td>High</td>
+  </tr>
+  <tr>
+    <td>Verify removed items do not appear in the cart</td>
+    <td>High</td>
+  </tr>
+  <tr>
     <td>More coming soon</td>
     <td>High/Medium/Low</td>
   </tr>
