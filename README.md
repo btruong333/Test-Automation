@@ -3,7 +3,7 @@
 This test plan outlines the regression test strategy for the Sauce Demo e-commerce application. The purpose of regression testing is to ensure that existing functionalities continue to work after code updates, deployments, or bug fixes.
 ## Scope of Testing
 Regression testing will cover under workflows across:
-- Authenication
+- Authentication
 - Product Inventory Page
 - Product Details Page
 - Shopping Cart
