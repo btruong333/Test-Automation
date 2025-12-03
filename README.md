@@ -128,6 +128,10 @@ Regression testing will cover under workflows across:
     <td>High</td>
   </tr>
   <tr>
+    <td>Checkout single item</td>
+    <td>High</td>
+  </tr>
+  <tr>
     <td>More coming soon</td>
     <td>High/Medium/Low</td>
   </tr>
