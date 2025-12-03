@@ -195,8 +195,13 @@ export class Objects {
 
     //Buttons and Links
     readonly addToCartButton: Locator;
+    readonly backToProductsLink: Locator;
+    readonly cancelButton: Locator;
+    readonly checkoutButton: Locator;
     readonly closeMenuButton: Locator;
+    readonly continueButton: Locator;
     readonly continueShoppingButton: Locator;
+    readonly finishButton: Locator;
     readonly removeButton: Locator;
     readonly shoppingCartLink: Locator;
 
@@ -205,8 +210,18 @@ export class Objects {
     readonly sortDropDown: Locator;
 
     //Fields
+    readonly firstNameField: Locator;
+    readonly lastNameField: Locator;
+    readonly zipPostalCodeField: Locator;
 
     //Labels
+    readonly inventoryItemDescription: Locator;
+    readonly inventoryItemName: Locator;
+    readonly inventoryItemPrice: Locator;
+    readonly productDescriptions: Locator;
+    readonly productDetailsDescription: Locator;
+    readonly productDetailsName: Locator;
+    readonly productDetailsPrice: Locator;
     readonly productNames: Locator;
     readonly productPrices: Locator;
 
@@ -224,8 +239,13 @@ export class Objects {
 
         //Buttons and Links
         this.addToCartButton = page.getByRole('button', { name: 'Add to cart' }).first();
+        this.backToProductsLink = page.getByRole('button', { name: 'Back to products'}).first();
+        this.cancelButton = page.getByRole('button', { name: 'Cancel' }).first();
+        this.checkoutButton = page.getByRole('button', { name: 'Checkout' }).first();
         this.closeMenuButton = page.getByRole('button', { name: 'Close Menu' }).first();
+        this.continueButton = page.getByRole('button', { name: 'Continue' }).first();
         this.continueShoppingButton = page.getByRole('button', { name: 'Continue Shopping' }).first();
+        this.finishButton = page.getByRole('button', { name: 'Finish' }).first();
         this.removeButton = page.getByRole('button', { name: 'Remove' }).first();
         this.shoppingCartLink = page.locator('[data-test="shopping-cart-link"]').first();
 
@@ -234,8 +254,18 @@ export class Objects {
         this.sortDropDown = page.getByRole('combobox').first();
 
         //Fields
+        this.firstNameField = page.getByRole('textbox', { name: 'First Name' }).first();
+        this.lastNameField = page.getByRole('textbox', { name: 'Last Name' }).first();
+        this.zipPostalCodeField = page.getByRole('textbox', { name: 'Zip'}).first();
 
         //Labels
+        this.inventoryItemDescription = page.locator('.inventory_item_desc');
+        this.inventoryItemName = page.locator('.inventory_item_name');
+        this.inventoryItemPrice = page.locator('.inventory_item_price');
+        this.productDescriptions = page.locator('.inventory_item_desc');
+        this.productDetailsDescription = page.locator('.inventory_details_desc');
+        this.productDetailsName = page.locator('.inventory_details_name');
+        this.productDetailsPrice = page.locator('.inventory_details_price');
         this.productNames = page.locator('.inventory_item_name');
         this.productPrices = page.locator('.inventory_item_price');
 
@@ -253,6 +283,11 @@ export class Objects {
     async selectSort(option: string) {
         //This looks at the sort drop-down
         await this.sortDropDown.selectOption(option);
+    }
+
+    async getProductDescriptions(): Promise<string[]> {
+        //Grabs all product descriptions
+        return await this.productDescriptions.allInnerTexts();
     }
 
     async getProductNames(): Promise<string[]> {
